@@ -1,5 +1,4 @@
 import axios from "axios";
-import { getStoredLang } from "@/lib/lang";
 
 const BASE_URL =
   import.meta.env.VITE_BASE_API_URL?.trim() || "http://localhost:8080/api/v1";
@@ -32,29 +31,6 @@ export class ApiError extends Error {
     this.apiResponse = apiResponse;
   }
 }
-
-axios.interceptors.request.use((config) => {
-  const lang = getStoredLang();
-  if (!lang) return config;
-
-  const method = (config.method ?? "get").toLowerCase();
-  const shouldAttachLangToQuery = method === "get" || method === "delete";
-  if (!shouldAttachLangToQuery) {
-    return config;
-  }
-
-  const url = config.url ?? "";
-  const hasLangInUrl =
-    typeof url === "string" &&
-    (url.includes("lang=") || url.includes("lang%3D"));
-  const params = (config.params ?? {}) as Record<string, any>;
-
-  if (!hasLangInUrl && params.lang === undefined) {
-    config.params = { ...params, lang };
-  }
-
-  return config;
-});
 
 // Axios 전역 에러 처리 인터셉터
 axios.interceptors.response.use(
