@@ -2,9 +2,9 @@ import { axios } from "@/lib/api/axiosConfig";
 import { PostItem, PostListResponse, PostPayload } from "@/lib/api/post/dto";
 
 export const getAdminPosts = async (
-  token: string,
-  page: number,
-  perPage: number
+ token: string,
+ page: number,
+ perPage: number
 ): Promise<PostListResponse> => {
   const response = await axios.get(`/admin/posts?page=${page}&per_page=${perPage}`, {
     headers: {
@@ -13,6 +13,19 @@ export const getAdminPosts = async (
   });
 
   return response.data as PostListResponse;
+};
+
+export const getAdminPost = async (
+  token: string,
+  id: number
+): Promise<PostItem> => {
+  const response = await axios.get(`/admin/posts/${id}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return response.data as PostItem;
 };
 
 export const createPost = async (

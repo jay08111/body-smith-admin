@@ -17,6 +17,9 @@ import { Route as errors404RouteImport } from './routes/(errors)/404'
 import { Route as errors403RouteImport } from './routes/(errors)/403'
 import { Route as errors401RouteImport } from './routes/(errors)/401'
 import { Route as authSignInRouteImport } from './routes/(auth)/sign-in'
+import { Route as AuthenticatedPostsIndexRouteImport } from './routes/_authenticated/posts/index'
+import { Route as AuthenticatedPostsNewRouteImport } from './routes/_authenticated/posts/new'
+import { Route as AuthenticatedPostsPostIdEditRouteImport } from './routes/_authenticated/posts/$postId/edit'
 
 const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
   id: '/_authenticated',
@@ -57,6 +60,22 @@ const authSignInRoute = authSignInRouteImport.update({
   path: '/sign-in',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedPostsIndexRoute = AuthenticatedPostsIndexRouteImport.update({
+  id: '/posts/',
+  path: '/posts/',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedPostsNewRoute = AuthenticatedPostsNewRouteImport.update({
+  id: '/posts/new',
+  path: '/posts/new',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedPostsPostIdEditRoute =
+  AuthenticatedPostsPostIdEditRouteImport.update({
+    id: '/posts/$postId/edit',
+    path: '/posts/$postId/edit',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/sign-in': typeof authSignInRoute
@@ -66,6 +85,9 @@ export interface FileRoutesByFullPath {
   '/500': typeof errors500Route
   '/503': typeof errors503Route
   '/': typeof AuthenticatedIndexRoute
+  '/posts/new': typeof AuthenticatedPostsNewRoute
+  '/posts': typeof AuthenticatedPostsIndexRoute
+  '/posts/$postId/edit': typeof AuthenticatedPostsPostIdEditRoute
 }
 export interface FileRoutesByTo {
   '/sign-in': typeof authSignInRoute
@@ -75,6 +97,9 @@ export interface FileRoutesByTo {
   '/500': typeof errors500Route
   '/503': typeof errors503Route
   '/': typeof AuthenticatedIndexRoute
+  '/posts/new': typeof AuthenticatedPostsNewRoute
+  '/posts': typeof AuthenticatedPostsIndexRoute
+  '/posts/$postId/edit': typeof AuthenticatedPostsPostIdEditRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -86,12 +111,35 @@ export interface FileRoutesById {
   '/(errors)/500': typeof errors500Route
   '/(errors)/503': typeof errors503Route
   '/_authenticated/': typeof AuthenticatedIndexRoute
+  '/_authenticated/posts/new': typeof AuthenticatedPostsNewRoute
+  '/_authenticated/posts/': typeof AuthenticatedPostsIndexRoute
+  '/_authenticated/posts/$postId/edit': typeof AuthenticatedPostsPostIdEditRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/sign-in' | '/401' | '/403' | '/404' | '/500' | '/503' | '/'
+  fullPaths:
+    | '/sign-in'
+    | '/401'
+    | '/403'
+    | '/404'
+    | '/500'
+    | '/503'
+    | '/'
+    | '/posts/new'
+    | '/posts'
+    | '/posts/$postId/edit'
   fileRoutesByTo: FileRoutesByTo
-  to: '/sign-in' | '/401' | '/403' | '/404' | '/500' | '/503' | '/'
+  to:
+    | '/sign-in'
+    | '/401'
+    | '/403'
+    | '/404'
+    | '/500'
+    | '/503'
+    | '/'
+    | '/posts/new'
+    | '/posts'
+    | '/posts/$postId/edit'
   id:
     | '__root__'
     | '/_authenticated'
@@ -102,6 +150,9 @@ export interface FileRouteTypes {
     | '/(errors)/500'
     | '/(errors)/503'
     | '/_authenticated/'
+    | '/_authenticated/posts/new'
+    | '/_authenticated/posts/'
+    | '/_authenticated/posts/$postId/edit'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -172,15 +223,42 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof authSignInRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/posts/': {
+      id: '/_authenticated/posts/'
+      path: '/posts'
+      fullPath: '/posts'
+      preLoaderRoute: typeof AuthenticatedPostsIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/posts/new': {
+      id: '/_authenticated/posts/new'
+      path: '/posts/new'
+      fullPath: '/posts/new'
+      preLoaderRoute: typeof AuthenticatedPostsNewRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/posts/$postId/edit': {
+      id: '/_authenticated/posts/$postId/edit'
+      path: '/posts/$postId/edit'
+      fullPath: '/posts/$postId/edit'
+      preLoaderRoute: typeof AuthenticatedPostsPostIdEditRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
+  AuthenticatedPostsNewRoute: typeof AuthenticatedPostsNewRoute
+  AuthenticatedPostsIndexRoute: typeof AuthenticatedPostsIndexRoute
+  AuthenticatedPostsPostIdEditRoute: typeof AuthenticatedPostsPostIdEditRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedIndexRoute: AuthenticatedIndexRoute,
+  AuthenticatedPostsNewRoute: AuthenticatedPostsNewRoute,
+  AuthenticatedPostsIndexRoute: AuthenticatedPostsIndexRoute,
+  AuthenticatedPostsPostIdEditRoute: AuthenticatedPostsPostIdEditRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
